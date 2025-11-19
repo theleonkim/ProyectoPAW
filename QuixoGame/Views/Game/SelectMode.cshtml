@@ -1,0 +1,39 @@
+@{
+    ViewData["Title"] = "Seleccionar Modo de Juego";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Selecciona el Modo de Juego</h1>
+    
+    <div class="row mt-5">
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Dos Jugadores</h5>
+                    <p class="card-text">Juega contra otro jugador. El primer jugador usa círculos (○) y el segundo usa cruces (×).</p>
+                    <form asp-controller="Game" asp-action="StartGame" method="post">
+                        <input type="hidden" name="mode" value="2" />
+                        <button type="submit" class="btn btn-primary btn-lg">Jugar 2 Jugadores</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Cuatro Jugadores</h5>
+                    <p class="card-text">Juega en equipos de dos. Equipo A (Jugadores 1 y 3) usa círculos, Equipo B (Jugadores 2 y 4) usa cruces.</p>
+                    <form asp-controller="Game" asp-action="StartGame" method="post">
+                        <input type="hidden" name="mode" value="4" />
+                        <button type="submit" class="btn btn-primary btn-lg">Jugar 4 Jugadores</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="mt-4">
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al Inicio</a>
+    </div>
+</div>
+

@@ -1,0 +1,159 @@
+@model Server.Models.GameViewModel
+@{
+    ViewData["Title"] = "Jugando Quixo";
+    var isTwoPlayers = Model.Mode == Server.Models.GameMode.TwoPlayers;
+}
+
+<div class="game-container">
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <h2>Partida en Curso</h2>
+            <p><strong>Modo:</strong> @(isTwoPlayers ? "Dos Jugadores" : "Cuatro Jugadores")</p>
+            @if (Model.Status != Server.Models.GameStatus.InProgress)
+            {
+                <div class="alert alert-success">
+                    <strong>¡Partida Finalizada!</strong> Ganador: @Model.Winner
+                </div>
+            }
+            else
+            {
+                <p><strong>Turno de:</strong> 
+                    @if (isTwoPlayers)
+                    {
+                        <span>Jugador @Model.CurrentPlayer (@(Model.CurrentPlayer == 1 ? "○" : "×"))</span>
+                    }
+                    else
+                    {
+                        <span>Jugador @Model.CurrentPlayer 
+                            (@(Model.CurrentPlayer == 1 || Model.CurrentPlayer == 3 ? "○ Equipo A" : "× Equipo B"))</span>
+                    }
+                </p>
+            }
+        </div>
+        <div class="col-md-6 text-end">
+            <div id="timer" class="seven-segment-display">
+                <span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>
+            </div>
+            <div class="mt-2">
+                <form asp-controller="Game" asp-action="Reset" asp-route-id="@Model.GameId" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-warning" onclick="return confirm('¿Estás seguro de reiniciar la partida?');">
+                        Reiniciar Partida
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    @if (isTwoPlayers)
+    {
+        <div class="player-label player-top text-center mb-2 @(Model.CurrentPlayer == 1 ? "current-player" : "")">
+            <strong>Jugador 1 (○)</strong>
+        </div>
+    }
+    else
+    {
+        <div class="row mb-2">
+            <div class="col-12 text-center">
+                <strong class="@(Model.CurrentPlayer == 1 ? "current-player" : "")">Jugador 1 (○ Equipo A)</strong>
+            </div>
+        </div>
+    }
+    
+    <div class="board-container">
+        <div class="game-board-wrapper">
+            @if (!isTwoPlayers)
+            {
+                <div class="player-label player-left-outer @(Model.CurrentPlayer == 4 ? "current-player" : "")">
+                    <strong>Jugador 4<br/>(× Equipo B)</strong>
+                </div>
+            }
+            <table class="game-board" id="gameBoard">
+                @for (int i = 0; i < 5; i++)
+                {
+                    <tr>
+                        @for (int j = 0; j < 5; j++)
+                        {
+                            <td class="cube-cell @(Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Neutral ? "neutral" : Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Circle ? "circle" : "cross")"
+                                data-row="@i" 
+                                data-col="@j"
+                                data-symbol="@Model.Board[i, j].Symbol"
+                                data-point="@(Model.Board[i, j].PointDirection?.ToString() ?? "")">
+                                <div class="cube">
+                                    @if (Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Neutral)
+                                    {
+                                        <span class="cube-symbol">·</span>
+                                    }
+                                    else if (Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Circle)
+                                    {
+                                        <span class="cube-symbol">○</span>
+                                        @if (!isTwoPlayers && Model.Board[i, j].PointDirection.HasValue)
+                                        {
+                                            <span class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <span class="cube-symbol">×</span>
+                                        @if (!isTwoPlayers && Model.Board[i, j].PointDirection.HasValue)
+                                        {
+                                            <span class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
+                                        }
+                                    }
+                                </div>
+                            </td>
+                        }
+                    </tr>
+                }
+            </table>
+            @if (!isTwoPlayers)
+            {
+                <div class="player-label player-right-outer @(Model.CurrentPlayer == 2 ? "current-player" : "")">
+                    <strong>Jugador 2<br/>(× Equipo B)</strong>
+                </div>
+            }
+        </div>
+    </div>
+    
+    @if (isTwoPlayers)
+    {
+        <div class="player-label player-bottom text-center mt-2 @(Model.CurrentPlayer == 2 ? "current-player" : "")">
+            <strong>Jugador 2 (×)</strong>
+        </div>
+    }
+    else
+    {
+        <div class="row mt-2">
+            <div class="col-12 text-center">
+                <strong class="@(Model.CurrentPlayer == 3 ? "current-player" : "")">Jugador 3 (○ Equipo A)</strong>
+            </div>
+        </div>
+    }
+    
+    @if (!isTwoPlayers && Model.Status == Server.Models.GameStatus.InProgress)
+    {
+        <div class="mt-3" id="pointDirectionSelector" style="display: none;">
+            <h5>Selecciona la orientación del punto:</h5>
+            <div class="btn-group" role="group">
+                <button type="button" class="btn btn-outline-primary" data-direction="Top">Arriba</button>
+                <button type="button" class="btn btn-outline-primary" data-direction="Right">Derecha</button>
+                <button type="button" class="btn btn-outline-primary" data-direction="Bottom">Abajo</button>
+                <button type="button" class="btn btn-outline-primary" data-direction="Left">Izquierda</button>
+            </div>
+        </div>
+    }
+    
+    <div id="gameMessage" class="alert mt-3" style="display: none;"></div>
+</div>
+
+<input type="hidden" id="gameId" value="@Model.GameId" />
+<input type="hidden" id="gameMode" value="@(isTwoPlayers ? "2" : "4")" />
+<input type="hidden" id="currentPlayer" value="@Model.CurrentPlayer" />
+<input type="hidden" id="isFirstRound" value="@Model.IsFirstRound.ToString().ToLower()" />
+<input type="hidden" id="gameStatus" value="@((int)Model.Status)" />
+<input type="hidden" id="initialTime" value="@Model.TimeElapsed.TotalSeconds" />
+
+@section Scripts {
+    <script src="~/js/game.js" asp-append-version="true"></script>
+    <script src="~/js/timer.js" asp-append-version="true"></script>
+}
+

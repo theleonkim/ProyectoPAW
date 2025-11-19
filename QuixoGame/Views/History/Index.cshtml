@@ -1,0 +1,65 @@
+@model List<Server.Models.Game>
+@{
+    ViewData["Title"] = "Historial de Partidas";
+}
+
+<h1>Historial de Partidas Finalizadas</h1>
+
+@if (Model == null || !Model.Any())
+{
+    <div class="alert alert-info">
+        No hay partidas finalizadas aún.
+    </div>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Fecha y Hora</th>
+                <th>Modo</th>
+                <th>Duración</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var game in Model)
+            {
+                <tr>
+                    <td>@game.CreatedAt.ToString("yyyy-MM-dd HH:mm:ss")</td>
+                    <td>@(game.Mode == Server.Models.GameMode.TwoPlayers ? "Dos Jugadores" : "Cuatro Jugadores")</td>
+                    <td>@(game.Duration?.ToString(@"hh\:mm\:ss") ?? "N/A")</td>
+                    <td>
+                        @switch (game.Status)
+                        {
+                            case Server.Models.GameStatus.WonByPlayer1:
+                                <span class="badge bg-success">Ganó el Jugador 1</span>
+                                break;
+                            case Server.Models.GameStatus.WonByPlayer2:
+                                <span class="badge bg-success">Ganó el Jugador 2</span>
+                                break;
+                            case Server.Models.GameStatus.WonByTeamA:
+                                <span class="badge bg-success">Ganó el Equipo A</span>
+                                break;
+                            case Server.Models.GameStatus.WonByTeamB:
+                                <span class="badge bg-success">Ganó el Equipo B</span>
+                                break;
+                            default:
+                                <span class="badge bg-secondary">Finalizada</span>
+                                break;
+                        }
+                    </td>
+                    <td>
+                        <a asp-action="View" asp-route-id="@game.Id" class="btn btn-sm btn-primary">Ver partida</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+<div class="mt-3">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al Inicio</a>
+</div>
+

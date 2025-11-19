@@ -1,0 +1,38 @@
+﻿@{
+    ViewData["Title"] = "Inicio";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Bienvenido a Quixo</h1>
+    <p class="lead">El objetivo del juego es crear una línea de cinco cubos con su símbolo</p>
+    
+    <div class="row mt-5">
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Jugar Partida Nueva</h5>
+                    <p class="card-text">Inicia una nueva partida para dos o cuatro jugadores</p>
+                    <a asp-controller="Game" asp-action="SelectMode" class="btn btn-primary">Nueva Partida</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Ver Historial</h5>
+                    <p class="card-text">Revisa y exporta partidas finalizadas</p>
+                    <a asp-controller="History" asp-action="Index" class="btn btn-primary">Ver Historial</a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h5 class="card-title">Estadísticas</h5>
+                    <p class="card-text">Estadísticas de jugadores y equipos</p>
+                    <a asp-controller="Statistics" asp-action="Index" class="btn btn-primary">Ver Estadísticas</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

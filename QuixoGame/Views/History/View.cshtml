@@ -1,0 +1,153 @@
+@model Server.Models.GameViewModel
+@{
+    ViewData["Title"] = "Ver Partida";
+    var moves = ViewBag.Moves as List<Server.Models.Move> ?? new List<Server.Models.Move>();
+    var gameId = ViewBag.GameId as int? ?? 0;
+    var isTwoPlayers = Model.Mode == Server.Models.GameMode.TwoPlayers;
+}
+
+<h1>Historial de Partida</h1>
+
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h5>Tablero</h5>
+            </div>
+            <div class="card-body">
+                @if (isTwoPlayers)
+                {
+                    <div class="player-label player-top text-center mb-2">
+                        <strong>Jugador 1 (○)</strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="row mb-2">
+                        <div class="col-12 text-center">
+                            <strong>Jugador 1 (○ Equipo A)</strong>
+                        </div>
+                    </div>
+                }
+                
+                <div class="board-container">
+                    <table class="game-board" id="historyBoard">
+                        @for (int i = 0; i < 5; i++)
+                        {
+                            <tr>
+                                @if (!isTwoPlayers && i == 2)
+                                {
+                                    <td class="player-label player-left">
+                                        <strong>Jugador 4<br/>(× Equipo B)</strong>
+                                    </td>
+                                }
+                                @for (int j = 0; j < 5; j++)
+                                {
+                                    <td class="cube-cell neutral" data-row="@i" data-col="@j">
+                                        <div class="cube">
+                                            <span class="cube-symbol">·</span>
+                                        </div>
+                                    </td>
+                                }
+                                @if (!isTwoPlayers && i == 2)
+                                {
+                                    <td class="player-label player-right">
+                                        <strong>Jugador 2<br/>(× Equipo B)</strong>
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    </table>
+                </div>
+                
+                @if (isTwoPlayers)
+                {
+                    <div class="player-label player-bottom text-center mt-2">
+                        <strong>Jugador 2 (×)</strong>
+                    </div>
+                }
+                else
+                {
+                    <div class="row mt-2">
+                        <div class="col-12 text-center">
+                            <strong>Jugador 3 (○ Equipo A)</strong>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5>Información</h5>
+            </div>
+            <div class="card-body">
+                <p><strong>Modo:</strong> @(isTwoPlayers ? "Dos Jugadores" : "Cuatro Jugadores")</p>
+                <p><strong>Fecha:</strong> @Model.TimeElapsed</p>
+                <p><strong>Estado:</strong> 
+                    @if (Model.Winner != null)
+                    {
+                        <span class="badge bg-success">@Model.Winner</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-secondary">Finalizada</span>
+                    }
+                </p>
+                <p><strong>Total de movimientos:</strong> @moves.Count</p>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5>Navegación</h5>
+            </div>
+            <div class="card-body">
+                <div id="timer" class="seven-segment-display mb-3">
+                    <span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>
+                </div>
+                <div class="btn-group w-100 mb-2" role="group">
+                    <button type="button" class="btn btn-outline-primary" id="btnFirst">Primero</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnPrev">Anterior</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnNext">Siguiente</button>
+                    <button type="button" class="btn btn-outline-primary" id="btnLast">Último</button>
+                </div>
+                <p class="text-center">
+                    <span id="moveInfo">Movimiento 0 de @moves.Count</span>
+                </p>
+            </div>
+        </div>
+        
+        <div class="card mt-3">
+            <div class="card-header">
+                <h5>Exportar</h5>
+            </div>
+            <div class="card-body">
+                <form asp-action="Export" asp-route-id="@gameId" method="post">
+                    <div class="mb-2">
+                        <label for="filePath" class="form-label">Nombre del archivo:</label>
+                        <input type="text" class="form-control" id="filePath" name="filePath" 
+                               value="quixo_game_@gameId" />
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Exportar a XML</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-action="Index" class="btn btn-secondary">Volver al Historial</a>
+</div>
+
+<input type="hidden" id="gameId" value="@gameId" />
+<input type="hidden" id="totalMoves" value="@moves.Count" />
+<input type="hidden" id="isTwoPlayers" value="@isTwoPlayers.ToString().ToLower()" />
+
+@section Scripts {
+    <script src="~/js/history.js" asp-append-version="true"></script>
+    <script src="~/js/timer.js" asp-append-version="true"></script>
+}
+

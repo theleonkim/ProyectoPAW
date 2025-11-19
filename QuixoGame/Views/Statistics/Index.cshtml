@@ -1,0 +1,86 @@
+@{
+    ViewData["Title"] = "Estadísticas";
+    var playerStats = ViewBag.PlayerStatistics as List<Server.Models.PlayerStatistics> ?? new List<Server.Models.PlayerStatistics>();
+    var teamStats = ViewBag.TeamStatistics as List<Server.Models.TeamStatistics> ?? new List<Server.Models.TeamStatistics>();
+}
+
+<h1>Estadísticas</h1>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Modo Dos Jugadores</h3>
+            </div>
+            <div class="card-body">
+                @if (playerStats.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Jugador</th>
+                                <th>Efectividad</th>
+                                <th>Ganadas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in playerStats)
+                            {
+                                <tr>
+                                    <td>@stat.PlayerName</td>
+                                    <td>@stat.Effectiveness.ToString("F0") %</td>
+                                    <td>@stat.GamesWon</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted">No hay estadísticas disponibles para el modo de dos jugadores.</p>
+                }
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header">
+                <h3>Modo Cuatro Jugadores</h3>
+            </div>
+            <div class="card-body">
+                @if (teamStats.Any())
+                {
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>Equipo</th>
+                                <th>Efectividad</th>
+                                <th>Ganadas</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var stat in teamStats)
+                            {
+                                <tr>
+                                    <td>@stat.TeamName</td>
+                                    <td>@stat.Effectiveness.ToString("F0") %</td>
+                                    <td>@stat.GamesWon</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+                else
+                {
+                    <p class="text-muted">No hay estadísticas disponibles para el modo de cuatro jugadores.</p>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="mt-3">
+    <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al Inicio</a>
+</div>
+
