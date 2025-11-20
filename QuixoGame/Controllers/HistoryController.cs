@@ -58,22 +58,29 @@ public class HistoryController : Controller
             var game = await _gameService.GetGameById(gameId);
             if (game == null)
                 return Json(new { success = false, error = "Game not found" });
-            
-            Move? move = null;
+
             if (moveNumber == 0)
             {
-                // Estado inicial - todos los cubos en neutro
                 var initialBoard = _gameLogic.InitializeBoard();
-                return Json(new { success = true, board = SerializeBoard(initialBoard), timeElapsed = TimeSpan.Zero });
+                return Json(new {
+                    success = true,
+                    board = SerializeBoard(initialBoard),
+                    timeElapsed = 0
+                });
             }
             else
             {
-                move = game.Moves.FirstOrDefault(m => m.MoveNumber == moveNumber);
+                var move = game.Moves.FirstOrDefault(m => m.MoveNumber == moveNumber);
                 if (move == null)
                     return Json(new { success = false, error = "Move not found" });
-                
+
                 var board = _gameLogic.DeserializeBoard(move.BoardStateAfter);
-                return Json(new { success = true, board = SerializeBoard(board), timeElapsed = move.TimeElapsed });
+
+                return Json(new {
+                    success = true,
+                    board = SerializeBoard(board),
+                    timeElapsed = (int)move.TimeElapsed.TotalSeconds // <-- esto lo arregla
+                });
             }
         }
         catch (Exception ex)

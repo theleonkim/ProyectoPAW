@@ -43,6 +43,7 @@ function loadMoveState(moveNumber) {
                 if (window.gameTimer) {
                     const totalSeconds = Math.floor(data.timeElapsed);
                     window.gameTimer.setTime(totalSeconds);
+                    window.gameTimer.stop();
                 }
             }
         })
