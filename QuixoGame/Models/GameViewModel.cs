@@ -10,5 +10,9 @@ public class GameViewModel
     public GameStatus Status { get; set; }
     public TimeSpan TimeElapsed { get; set; }
     public string? Winner { get; set; }
+
+    public DateTime CreatedAt { get; set; }
+    public DateTime? FinishedAt { get; set; }
+    
 }
 

@@ -74,7 +74,9 @@ public class GameService
             IsFirstRound = game.IsFirstRound,
             Status = game.Status,
             TimeElapsed = timeElapsed,
-            Winner = winner
+            Winner = winner,
+            CreatedAt = game.CreatedAt,
+            FinishedAt = game.FinishedAt
         };
     }
     

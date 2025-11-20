@@ -85,7 +85,8 @@
             </div>
             <div class="card-body">
                 <p><strong>Modo:</strong> @(isTwoPlayers ? "Dos Jugadores" : "Cuatro Jugadores")</p>
-                <p><strong>Fecha:</strong> @Model.TimeElapsed</p>
+                <p><strong>Fecha:</strong> @(Model.FinishedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "—")</p>
+
                 <p><strong>Estado:</strong> 
                     @if (Model.Winner != null)
                     {
