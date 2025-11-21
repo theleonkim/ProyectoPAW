@@ -17,14 +17,14 @@
             }
             else
             {
-                <p><strong>Turno de:</strong> 
+                <p><strong>Turno de:</strong>
                     @if (isTwoPlayers)
                     {
                         <span>Jugador @Model.CurrentPlayer (@(Model.CurrentPlayer == 1 ? "○" : "×"))</span>
                     }
                     else
                     {
-                        <span>Jugador @Model.CurrentPlayer 
+                        <span>Jugador @Model.CurrentPlayer
                             (@(Model.CurrentPlayer == 1 || Model.CurrentPlayer == 3 ? "○ Equipo A" : "× Equipo B"))</span>
                     }
                 </p>
@@ -35,15 +35,17 @@
                 <span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>
             </div>
             <div class="mt-2">
-                <form asp-controller="Game" asp-action="Reset" asp-route-id="@Model.GameId" method="post" class="d-inline">
-                    <button type="submit" class="btn btn-warning" onclick="return confirm('¿Estás seguro de reiniciar la partida?');">
+                <form asp-controller="Game" asp-action="Reset" asp-route-id="@Model.GameId" method="post"
+                    class="d-inline">
+                    <button type="submit" class="btn btn-warning"
+                        onclick="return confirm('¿Estás seguro de reiniciar la partida?');">
                         Reiniciar Partida
                     </button>
                 </form>
             </div>
         </div>
     </div>
-    
+
     @if (isTwoPlayers)
     {
         <div class="player-label player-top text-center mb-2 @(Model.CurrentPlayer == 1 ? "current-player" : "")">
@@ -58,13 +60,13 @@
             </div>
         </div>
     }
-    
+
     <div class="board-container">
         <div class="game-board-wrapper">
             @if (!isTwoPlayers)
             {
                 <div class="player-label player-left-outer @(Model.CurrentPlayer == 4 ? "current-player" : "")">
-                    <strong>Jugador 4<br/>(× Equipo B)</strong>
+                    <strong>Jugador 4<br />(× Equipo B)</strong>
                 </div>
             }
             <table class="game-board" id="gameBoard">
@@ -74,9 +76,7 @@
                         @for (int j = 0; j < 5; j++)
                         {
                             <td class="cube-cell @(Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Neutral ? "neutral" : Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Circle ? "circle" : "cross")"
-                                data-row="@i" 
-                                data-col="@j"
-                                data-symbol="@Model.Board[i, j].Symbol"
+                                data-row="@i" data-col="@j" data-symbol="@Model.Board[i, j].Symbol"
                                 data-point="@(Model.Board[i, j].PointDirection?.ToString() ?? "")">
                                 <div class="cube">
                                     @if (Model.Board[i, j].Symbol == Server.Models.CubeSymbol.Neutral)
@@ -88,7 +88,8 @@
                                         <span class="cube-symbol">○</span>
                                         @if (!isTwoPlayers && Model.Board[i, j].PointDirection.HasValue)
                                         {
-                                            <span class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
+                                            <span
+                                                class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
                                         }
                                     }
                                     else
@@ -96,7 +97,8 @@
                                         <span class="cube-symbol">×</span>
                                         @if (!isTwoPlayers && Model.Board[i, j].PointDirection.HasValue)
                                         {
-                                            <span class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
+                                            <span
+                                                class="point-indicator point-@Model.Board[i, j].PointDirection.Value.ToString().ToLower()">·</span>
                                         }
                                     }
                                 </div>
@@ -108,12 +110,12 @@
             @if (!isTwoPlayers)
             {
                 <div class="player-label player-right-outer @(Model.CurrentPlayer == 2 ? "current-player" : "")">
-                    <strong>Jugador 2<br/>(× Equipo B)</strong>
+                    <strong>Jugador 2<br />(× Equipo B)</strong>
                 </div>
             }
         </div>
     </div>
-    
+
     @if (isTwoPlayers)
     {
         <div class="player-label player-bottom text-center mt-2 @(Model.CurrentPlayer == 2 ? "current-player" : "")">
@@ -128,20 +130,38 @@
             </div>
         </div>
     }
-    
+
+    <!-- Esto es para seleccionar la direccion del punto en modo 4 jugadores -->
     @if (!isTwoPlayers && Model.Status == Server.Models.GameStatus.InProgress)
     {
         <div class="mt-3" id="pointDirectionSelector" style="display: none;">
             <h5>Selecciona la orientación del punto:</h5>
-            <div class="btn-group" role="group">
-                <button type="button" class="btn btn-outline-primary" data-direction="Top">Arriba</button>
-                <button type="button" class="btn btn-outline-primary" data-direction="Right">Derecha</button>
-                <button type="button" class="btn btn-outline-primary" data-direction="Bottom">Abajo</button>
-                <button type="button" class="btn btn-outline-primary" data-direction="Left">Izquierda</button>
+
+            <div class="dpad">
+                <!-- Arriba -->
+                <button type="button" class="btn btn-outline-primary dpad-btn dpad-up" data-direction="Top">
+                    ↑
+                </button>
+
+                <!-- Izquierda -->
+                <button type="button" class="btn btn-outline-primary dpad-btn dpad-left" data-direction="Left">
+                    ←
+                </button>
+
+                <!-- Derecha -->
+                <button type="button" class="btn btn-outline-primary dpad-btn dpad-right" data-direction="Right">
+                    →
+                </button>
+
+                <!-- Abajo -->
+                <button type="button" class="btn btn-outline-primary dpad-btn dpad-down" data-direction="Bottom">
+                    ↓
+                </button>
             </div>
         </div>
     }
-    
+
+
     <div id="gameMessage" class="alert mt-3" style="display: none;"></div>
 </div>
 
@@ -156,4 +176,3 @@
     <script src="~/js/game.js" asp-append-version="true"></script>
     <script src="~/js/timer.js" asp-append-version="true"></script>
 }
-

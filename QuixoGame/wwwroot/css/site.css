@@ -282,3 +282,38 @@ strong.current-player {
     min-width: 80px;
   }
 }
+
+.dpad {
+    display: grid;
+    grid-template-columns: repeat(3, 40px);
+    grid-template-rows: repeat(3, 40px);
+    gap: 4px;
+    justify-content: center;
+    align-items: center;
+}
+
+.dpad-up {
+    grid-column: 2;
+    grid-row: 1;
+}
+
+.dpad-left {
+    grid-column: 1;
+    grid-row: 2;
+}
+
+.dpad-right {
+    grid-column: 3;
+    grid-row: 2;
+}
+
+.dpad-down {
+    grid-column: 2;
+    grid-row: 3;
+}
+
+.dpad-btn {
+    padding: 0;
+    text-align: center;
+    line-height: 40px;
+}
