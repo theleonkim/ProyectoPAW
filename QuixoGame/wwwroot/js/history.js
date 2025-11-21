@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('btnLast')?.addEventListener('click', () => goToMove(totalMoves));
     
     // Inicializar timer
-    if (window.gameTimer) {
-        window.gameTimer.stop();
+    if (window.replayTimer) {
+        window.replayTimer.stop();
     }
 });
 
@@ -34,16 +34,17 @@ function goToMove(moveNumber) {
     updateButtons();
 }
 
+//Estado de cada move
 function loadMoveState(moveNumber) {
     fetch(`/History/GetMoveState?gameId=${gameId}&moveNumber=${moveNumber}`)
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 updateBoard(data.board);
-                if (window.gameTimer) {
+                if (window.replayTimer) {
                     const totalSeconds = Math.floor(data.timeElapsed);
-                    window.gameTimer.setTime(totalSeconds);
-                    window.gameTimer.stop();
+                    window.replayTimer.setTime(totalSeconds);
+                    window.replayTimer.stop();
                 }
             }
         })
@@ -52,6 +53,7 @@ function loadMoveState(moveNumber) {
         });
 }
 
+//Actualizacion del tablero
 function updateBoard(board) {
     const cells = document.querySelectorAll('#historyBoard .cube-cell');
     cells.forEach((cell, index) => {
@@ -101,7 +103,7 @@ function updateMoveInfo() {
         moveInfo.textContent = `Movimiento ${currentMove} de ${totalMoves}`;
     }
 }
-
+//Logica de los botones (enable/disable)
 function updateButtons() {
     document.getElementById('btnFirst').disabled = currentMove === 0;
     document.getElementById('btnPrev').disabled = currentMove === 0;

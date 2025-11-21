@@ -29,7 +29,7 @@
                         </div>
                     </div>
                 }
-                
+
                 <div class="board-container">
                     <table class="game-board" id="historyBoard">
                         @for (int i = 0; i < 5; i++)
@@ -38,7 +38,7 @@
                                 @if (!isTwoPlayers && i == 2)
                                 {
                                     <td class="player-label player-left">
-                                        <strong>Jugador 4<br/>(× Equipo B)</strong>
+                                        <strong>Jugador 4<br />(× Equipo B)</strong>
                                     </td>
                                 }
                                 @for (int j = 0; j < 5; j++)
@@ -52,14 +52,14 @@
                                 @if (!isTwoPlayers && i == 2)
                                 {
                                     <td class="player-label player-right">
-                                        <strong>Jugador 2<br/>(× Equipo B)</strong>
+                                        <strong>Jugador 2<br />(× Equipo B)</strong>
                                     </td>
                                 }
                             </tr>
                         }
                     </table>
                 </div>
-                
+
                 @if (isTwoPlayers)
                 {
                     <div class="player-label player-bottom text-center mt-2">
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-4">
         <div class="card">
             <div class="card-header">
@@ -87,7 +87,7 @@
                 <p><strong>Modo:</strong> @(isTwoPlayers ? "Dos Jugadores" : "Cuatro Jugadores")</p>
                 <p><strong>Fecha:</strong> @(Model.FinishedAt?.ToString("yyyy-MM-dd HH:mm:ss") ?? "—")</p>
 
-                <p><strong>Estado:</strong> 
+                <p><strong>Estado:</strong>
                     @if (Model.Winner != null)
                     {
                         <span class="badge bg-success">@Model.Winner</span>
@@ -100,15 +100,20 @@
                 <p><strong>Total de movimientos:</strong> @moves.Count</p>
             </div>
         </div>
-        
+
         <div class="card mt-3">
             <div class="card-header">
                 <h5>Navegación</h5>
             </div>
             <div class="card-body">
-                <div id="timer" class="seven-segment-display mb-3">
-                    <span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>
-                </div>
+                @await Html.PartialAsync("_SevenSegmentTimer", new TimerViewModel
+                {
+                    Id = "replayTimer",
+                                JsVariableName = "replayTimer",
+                                InitialSeconds = 0,
+                                AutoStart = false,
+                                CssClass = "mb-3"
+                                })
                 <div class="btn-group w-100 mb-2" role="group">
                     <button type="button" class="btn btn-outline-primary" id="btnFirst">Primero</button>
                     <button type="button" class="btn btn-outline-primary" id="btnPrev">Anterior</button>
@@ -120,7 +125,7 @@
                 </p>
             </div>
         </div>
-        
+
         <div class="card mt-3">
             <div class="card-header">
                 <h5>Exportar</h5>
@@ -129,8 +134,8 @@
                 <form asp-action="Export" asp-route-id="@gameId" method="post">
                     <div class="mb-2">
                         <label for="filePath" class="form-label">Nombre del archivo:</label>
-                        <input type="text" class="form-control" id="filePath" name="filePath" 
-                               value="quixo_game_@gameId" />
+                        <input type="text" class="form-control" id="filePath" name="filePath"
+                            value="quixo_game_@gameId" />
                     </div>
                     <button type="submit" class="btn btn-success w-100">Exportar a XML</button>
                 </form>
@@ -151,4 +156,3 @@
     <script src="~/js/history.js" asp-append-version="true"></script>
     <script src="~/js/timer.js" asp-append-version="true"></script>
 }
-

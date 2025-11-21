@@ -229,28 +229,90 @@ strong.current-player {
 }
 
 /* Pantalla de 7 segmentos */
-.seven-segment-display {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-family: 'Courier New', monospace;
-  background-color: #000;
-  padding: 10px 15px;
-  border-radius: 5px;
+.seven-segment-timer {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
 }
 
-.seven-segment-display .digit {
-  display: inline-block;
-  color: #0f0;
-  font-size: 2rem;
-  font-weight: bold;
-  text-shadow: 0 0 10px #0f0;
-  min-width: 40px;
-  text-align: center;
-  background-color: #1a1a1a;
-  padding: 5px;
-  border-radius: 3px;
+.seven-segment-timer .digit {
+    position: relative;
+    width: 32px;
+    height: 56px;
 }
+
+.seven-segment-timer .segment {
+    position: absolute;
+    background: #222;
+    opacity: 0.2; /* off */
+    border-radius: 4px;
+    transition: opacity 0.15s;
+}
+
+/* horizontal */
+.seven-segment-timer .seg-a,
+.seven-segment-timer .seg-d,
+.seven-segment-timer .seg-g {
+    width: 70%;
+    height: 6px;
+    left: 15%;
+}
+
+.seven-segment-timer .seg-a {
+    top: 2px;
+}
+
+.seven-segment-timer .seg-g {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.seven-segment-timer .seg-d {
+    bottom: 2px;
+}
+
+/* vertical */
+.seven-segment-timer .seg-b,
+.seven-segment-timer .seg-c,
+.seven-segment-timer .seg-e,
+.seven-segment-timer .seg-f {
+    width: 6px;
+    height: 42%;
+}
+
+.seven-segment-timer .seg-b {
+    right: 2px;
+    top: 4px;
+}
+
+.seven-segment-timer .seg-c {
+    right: 2px;
+    bottom: 4px;
+}
+
+.seven-segment-timer .seg-f {
+    left: 2px;
+    top: 4px;
+}
+
+.seven-segment-timer .seg-e {
+    left: 2px;
+    bottom: 4px;
+}
+
+/* ON state */
+.seven-segment-timer .segment.on {
+    background: #e00;
+    opacity: 1;
+}
+
+.seven-segment-timer .separator {
+    font-size: 32px;
+    line-height: 1;
+    margin: 0 2px;
+    color: #e00;
+}
+
 
 /* Game message */
 #gameMessage {

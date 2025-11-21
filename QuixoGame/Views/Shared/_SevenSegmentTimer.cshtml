@@ -1,0 +1,27 @@
+@model Server.Models.TimerViewModel
+
+<div id="@Model.Id"
+     class="seven-segment-timer @Model.CssClass"
+     data-seven-seg-timer="true"
+     data-timer-name="@Model.JsVariableName"
+     data-initial-seconds="@Model.InitialSeconds"
+     data-auto-start="@Model.AutoStart.ToString().ToLower()">
+    
+    @for (var i = 0; i < 6; i++)
+    {
+        <div class="digit">
+            <span class="segment seg-a"></span>
+            <span class="segment seg-b"></span>
+            <span class="segment seg-c"></span>
+            <span class="segment seg-d"></span>
+            <span class="segment seg-e"></span>
+            <span class="segment seg-f"></span>
+            <span class="segment seg-g"></span>
+        </div>
+
+        if (i == 1 || i == 3)
+        {
+            <div class="separator">:</div>
+        }
+    }
+</div>

@@ -31,9 +31,14 @@
             }
         </div>
         <div class="col-md-6 text-end">
-            <div id="timer" class="seven-segment-display">
-                <span class="digit">00</span>:<span class="digit">00</span>:<span class="digit">00</span>
-            </div>
+            @await Html.PartialAsync("_SevenSegmentTimer", new TimerViewModel
+            {
+                Id = "gameTimer",
+                        JsVariableName = "gameTimer",
+                        InitialSeconds = (int)Model.TimeElapsed.TotalSeconds,
+                        AutoStart = Model.Status == Server.Models.GameStatus.InProgress,
+                        CssClass = ""
+                        })
             <div class="mt-2">
                 <form asp-controller="Game" asp-action="Reset" asp-route-id="@Model.GameId" method="post"
                     class="d-inline">
