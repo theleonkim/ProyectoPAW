@@ -15,6 +15,7 @@
                 <h5>Tablero</h5>
             </div>
             <div class="card-body">
+                @* ==== JUGADORES ARRIBA ==== *@
                 @if (isTwoPlayers)
                 {
                     <div class="player-label player-top text-center mb-2">
@@ -30,36 +31,42 @@
                     </div>
                 }
 
+                @* ==== TABLERO + JUGADORES LATERALES ==== *@
                 <div class="board-container">
-                    <table class="game-board" id="historyBoard">
-                        @for (int i = 0; i < 5; i++)
+                    <div class="game-board-wrapper">
+                        @if (!isTwoPlayers)
                         {
-                            <tr>
-                                @if (!isTwoPlayers && i == 2)
-                                {
-                                    <td class="player-label player-left">
-                                        <strong>Jugador 4<br />(× Equipo B)</strong>
-                                    </td>
-                                }
-                                @for (int j = 0; j < 5; j++)
-                                {
-                                    <td class="cube-cell neutral" data-row="@i" data-col="@j">
-                                        <div class="cube">
-                                            <span class="cube-symbol">·</span>
-                                        </div>
-                                    </td>
-                                }
-                                @if (!isTwoPlayers && i == 2)
-                                {
-                                    <td class="player-label player-right">
-                                        <strong>Jugador 2<br />(× Equipo B)</strong>
-                                    </td>
-                                }
-                            </tr>
+                            <div class="player-label player-left-outer">
+                                <strong>Jugador 4<br />(× Equipo B)</strong>
+                            </div>
                         }
-                    </table>
+
+                        <table class="game-board" id="historyBoard">
+                            @for (int i = 0; i < 5; i++)
+                            {
+                                <tr>
+                                    @for (int j = 0; j < 5; j++)
+                                    {
+                                        <td class="cube-cell neutral" data-row="@i" data-col="@j">
+                                            <div class="cube">
+                                                <span class="cube-symbol">·</span>
+                                            </div>
+                                        </td>
+                                    }
+                                </tr>
+                            }
+                        </table>
+
+                        @if (!isTwoPlayers)
+                        {
+                            <div class="player-label player-right-outer">
+                                <strong>Jugador 2<br />(× Equipo B)</strong>
+                            </div>
+                        }
+                    </div>
                 </div>
 
+                @* ==== JUGADORES ABAJO ==== *@
                 @if (isTwoPlayers)
                 {
                     <div class="player-label player-bottom text-center mt-2">
@@ -109,11 +116,11 @@
                 @await Html.PartialAsync("_SevenSegmentTimer", new TimerViewModel
                 {
                     Id = "replayTimer",
-                                JsVariableName = "replayTimer",
-                                InitialSeconds = 0,
-                                AutoStart = false,
-                                CssClass = "mb-3"
-                                })
+                    JsVariableName = "replayTimer",
+                    InitialSeconds = 0,
+                    AutoStart = false,
+                    CssClass = "mb-3"
+                })
                 <div class="btn-group w-100 mb-2" role="group">
                     <button type="button" class="btn btn-outline-primary" id="btnFirst">Primero</button>
                     <button type="button" class="btn btn-outline-primary" id="btnPrev">Anterior</button>
@@ -135,7 +142,7 @@
                     <div class="mb-2">
                         <label for="filePath" class="form-label">Nombre del archivo:</label>
                         <input type="text" class="form-control" id="filePath" name="filePath"
-                            value="quixo_game_@gameId" />
+                               value="quixo_game_@gameId" />
                     </div>
                     <button type="submit" class="btn btn-success w-100">Exportar a XML</button>
                 </form>
