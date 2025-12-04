@@ -379,3 +379,580 @@ strong.current-player {
     text-align: center;
     line-height: 40px;
 }
+
+
+/* ===== Home Page Modern Design ===== */
+
+.home-container {
+    text-align: center;
+    margin-top: 60px;
+    animation: fadeIn 0.7s ease;
+}
+
+.title {
+    font-size: 4rem;
+    font-weight: 900;
+    letter-spacing: 8px;
+    margin-bottom: 10px;
+    color: #1f2937;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+
+.subtitle {
+    font-size: 1.2rem;
+    color: #6b7280;
+    margin-bottom: 40px;
+}
+
+.options-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.option-card {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.25s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    background: #2563eb;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 15px;
+    color: white;
+    font-size: 2rem;
+    transition: background 0.2s ease;
+}
+
+.option-card:hover .icon-circle {
+    background: #1d4ed8;
+}
+
+.option-card h3 {
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1f2937;
+}
+
+.option-card p {
+    font-size: 0.95rem;
+    color: #6b7280;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== Estilo moderno para selección de modo ===== */
+
+.option-card-form {
+    background: white;
+    border-radius: 20px;
+    padding: 30px 20px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.25s ease;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.option-card-form:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.18);
+}
+
+.icon-circle.two-players {
+    background: #2563eb;
+}
+
+.icon-circle.four-players {
+    background: #16a34a;
+}
+
+.icon-circle {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 2rem;
+    transition: background 0.2s ease;
+}
+
+.option-card-form:hover .icon-circle {
+    filter: brightness(0.9);
+}
+
+.btn-game {
+    background: #2563eb;
+    color: white;
+    border: none;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn-game:hover {
+    background: #1e40af;
+    color: white;
+}
+
+.btn-back {
+    background: #6b7280;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: #4b5563;
+    color: white;
+}
+
+/* ===== Estilos Modernos para Jugando Quixo ===== */
+
+.game-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+    animation: fadeIn 0.5s ease;
+}
+
+.game-container h2 {
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.game-container p strong {
+    color: #111827;
+}
+
+.board-container {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+}
+
+.game-board-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Tablero */
+.game-board {
+    border-collapse: separate;
+    border-spacing: 8px;
+}
+
+.game-board td {
+    width: 80px;
+    height: 80px;
+    border-radius: 12px;
+    background-color: #f3f4f6;
+    text-align: center;
+    vertical-align: middle;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.game-board td:hover {
+    transform: scale(1.05);
+    background-color: #e5e7eb;
+}
+
+/* Cubos */
+.cube {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+}
+
+.cube-cell.selected {
+    border: 3px solid #f59e0b;
+    background-color: #fef3c7;
+}
+
+.cube-cell.valid-placement {
+    border: 2px dashed #10b981;
+    background-color: #d1fae5;
+}
+
+/* Símbolos */
+.cube-cell.neutral .cube-symbol {
+    color: #9ca3af;
+}
+
+.cube-cell.circle .cube-symbol {
+    color: #3b82f6;
+}
+
+.cube-cell.cross .cube-symbol {
+    color: #ef4444;
+}
+
+/* Indicadores de puntos (modo 4 jugadores) */
+.point-indicator {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #f97316;
+    text-shadow: 0 0 4px rgba(0,0,0,0.5);
+}
+
+/* Labels de jugadores */
+.player-label strong {
+    padding: 8px 12px;
+    border-radius: 8px;
+    display: inline-block;
+    transition: all 0.2s ease;
+    font-weight: 700;
+    color: #374151;
+}
+
+.player-label.current-player strong {
+    background-color: #10b981;
+    color: white;
+    box-shadow: 0 0 12px rgba(16,185,129,0.5);
+}
+
+/* Botones */
+button.btn, .btn {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+button.btn:hover, .btn:hover {
+    filter: brightness(0.95);
+}
+
+/* Dpad moderno */
+.dpad .dpad-btn {
+    width: 45px;
+    height: 45px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    background-color: #3b82f6;
+    color: white;
+    border: none;
+    transition: all 0.2s ease;
+}
+
+.dpad .dpad-btn:hover {
+    background-color: #2563eb;
+}
+
+/* Timer Seven Segment */
+.seven-segment-timer .segment.on {
+    background: #ef4444;
+}
+
+/* Animación general */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .game-board td { width: 60px; height: 60px; }
+    .cube { font-size: 2rem; }
+    .player-label strong { font-size: 0.9rem; }
+    .dpad .dpad-btn { width: 40px; height: 40px; font-size: 1rem; }
+}
+
+/* ===== Historial de Partidas Moderno ===== */
+
+.history-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 30px;
+}
+
+.history-card {
+    background: white;
+    border-radius: 18px;
+    padding: 20px;
+    border: 2px solid #95918C; /* borde azul más visible */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.1);
+}
+
+.history-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 30px rgba(0,0,0,0.18);
+}
+
+.history-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.history-date {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.95rem;
+}
+
+.history-mode {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    background-color: #3b82f6;
+    color: white;
+    font-weight: 600;
+}
+
+.history-card-body p {
+    margin: 5px 0;
+    font-size: 0.95rem;
+    color: #4b5563;
+}
+
+.badge-success {
+    background-color: #10b981 !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+}
+
+.badge-secondary {
+    background-color: #6b7280 !important;
+    color: white !important;
+    font-weight: 600;
+    border-radius: 10px;
+    padding: 3px 10px;
+    font-size: 0.85rem;
+}
+
+.history-card-footer {
+    margin-top: 15px;
+    text-align: center;
+}
+
+.btn-view {
+    background-color: #2563eb;
+    color: white;
+    border-radius: 12px;
+    padding: 8px 20px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-view:hover {
+    background-color: #1e40af;
+    color: white;
+}
+
+/* Botón volver al inicio */
+.btn-back {
+    background: #6b7280;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+    background: #4b5563;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+    .history-card-body p, .history-date, .history-mode {
+        font-size: 0.85rem;
+    }
+
+    .btn-view {
+        padding: 6px 16px;
+        font-size: 0.9rem;
+    }
+}
+
+/* ===== Vista de Ver Partida - Moderno ===== */
+
+.card.shadow-sm {
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.shadow-sm:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+.modern-label strong {
+    background-color: #3b82f6;
+    color: white;
+    padding: 6px 12px;
+    border-radius: 12px;
+    display: inline-block;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(59,130,246,0.5);
+}
+
+.modern-info p {
+    font-size: 0.95rem;
+    color: #374151;
+}
+
+.modern-info .badge-success {
+    background-color: #10b981 !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 0 8px rgba(16,185,129,0.5);
+}
+
+.modern-info .badge-secondary {
+    background-color: #6b7280 !important;
+    color: white !important;
+    font-weight: 600;
+    box-shadow: 0 0 5px rgba(107,114,128,0.4);
+}
+
+.btn-outline-primary {
+    border-radius: 10px;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #3b82f6;
+    color: white;
+}
+
+.btn-success {
+    border-radius: 10px;
+    font-weight: 600;
+}
+
+/* ===== Estadísticas modernas ===== */
+
+.card.shadow-sm {
+    border-radius: 16px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card.shadow-sm:hover {
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15); /* Sombra al hover sigue */
+}
+
+.card-header {
+    font-weight: 600;
+    font-size: 1rem;
+    color: black;
+}
+
+.modern-table th {
+    background-color: #eef2ff;
+    color: #4f46e5;
+    font-weight: 600;
+    text-align: center;
+}
+
+.modern-table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+.modern-table tbody tr:hover {
+    background-color: #f3f4f6;
+}
+
+/* Barra de efectividad */
+.effectiveness-bar {
+    position: relative;
+    background-color: #e5e7eb;
+    border-radius: 12px;
+    height: 20px;
+    overflow: hidden;
+    width: 100%;
+}
+
+.effectiveness-bar .fill {
+    background-color: #69db7c;
+    height: 100%;
+    transition: width 0.4s ease;
+    border-radius: 12px 0 0 12px;
+}
+
+.effectiveness-bar .percent-text {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 600;
+    color: black;
+    font-size: 0.85rem;
+}
+
+/* Navbar */
+.navbar {
+    background-color: #f8f9fa; /* más moderno y limpio */
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: #3b82f6;
+}
+
+.navbar-nav .nav-link {
+    color: #374151; /* gris oscuro */
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.navbar-nav .nav-link:hover {
+    color: #3b82f6; /* azul vibrante */
+}

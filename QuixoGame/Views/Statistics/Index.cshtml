@@ -4,18 +4,19 @@
     var teamStats = ViewBag.TeamStatistics as List<Server.Models.TeamStatistics> ?? new List<Server.Models.TeamStatistics>();
 }
 
-<h1>Estadísticas</h1>
+<h1 class="title">Estadísticas</h1>
 
-<div class="row">
+<div class="row mt-3">
+    <!-- Estadísticas Dos Jugadores -->
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-indigo-600 text-black">
                 <h3>Modo Dos Jugadores</h3>
             </div>
             <div class="card-body">
                 @if (playerStats.Any())
                 {
-                    <table class="table table-striped">
+                    <table class="table table-striped modern-table">
                         <thead>
                             <tr>
                                 <th>Jugador</th>
@@ -28,7 +29,12 @@
                             {
                                 <tr>
                                     <td>@stat.PlayerName</td>
-                                    <td>@stat.Effectiveness.ToString("F0") %</td>
+                                    <td>
+                                        <div class="effectiveness-bar">
+                                            <div class="fill" style="width:@stat.Effectiveness%"></div>
+                                            <span class="percent-text">@stat.Effectiveness.ToString("F0") %</span>
+                                        </div>
+                                    </td>
                                     <td>@stat.GamesWon</td>
                                 </tr>
                             }
@@ -42,16 +48,17 @@
             </div>
         </div>
     </div>
-    
+
+    <!-- Estadísticas Cuatro Jugadores -->
     <div class="col-md-6">
-        <div class="card">
-            <div class="card-header">
+        <div class="card shadow-sm mb-3">
+            <div class="card-header bg-indigo-600 text-black">
                 <h3>Modo Cuatro Jugadores</h3>
             </div>
             <div class="card-body">
                 @if (teamStats.Any())
                 {
-                    <table class="table table-striped">
+                    <table class="table table-striped modern-table">
                         <thead>
                             <tr>
                                 <th>Equipo</th>
@@ -64,7 +71,12 @@
                             {
                                 <tr>
                                     <td>@stat.TeamName</td>
-                                    <td>@stat.Effectiveness.ToString("F0") %</td>
+                                    <td>
+                                        <div class="effectiveness-bar">
+                                            <div class="fill" style="width:@stat.Effectiveness%"></div>
+                                            <span class="percent-text">@stat.Effectiveness.ToString("F0") %</span>
+                                        </div>
+                                    </td>
                                     <td>@stat.GamesWon</td>
                                 </tr>
                             }
@@ -83,4 +95,3 @@
 <div class="mt-3">
     <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al Inicio</a>
 </div>
-

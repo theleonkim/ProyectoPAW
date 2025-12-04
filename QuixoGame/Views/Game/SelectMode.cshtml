@@ -2,38 +2,36 @@
     ViewData["Title"] = "Seleccionar Modo de Juego";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Selecciona el Modo de Juego</h1>
-    
-    <div class="row mt-5">
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Dos Jugadores</h5>
-                    <p class="card-text">Juega contra otro jugador. El primer jugador usa círculos (○) y el segundo usa cruces (×).</p>
-                    <form asp-controller="Game" asp-action="StartGame" method="post">
-                        <input type="hidden" name="mode" value="2" />
-                        <button type="submit" class="btn btn-primary btn-lg">Jugar 2 Jugadores</button>
-                    </form>
-                </div>
+<div class="home-container">
+    <h1 class="title">Selecciona el Modo de Juego</h1>
+    <p class="subtitle">Elige entre jugar 2 o 4 jugadores</p>
+
+    <div class="options-grid">
+        
+        <form asp-controller="Game" asp-action="StartGame" method="post" class="option-card-form">
+            <input type="hidden" name="mode" value="2" />
+            <div class="icon-circle two-players">
+                <i class="bi bi-people-fill"></i>
             </div>
-        </div>
-        <div class="col-md-6 mb-3">
-            <div class="card h-100">
-                <div class="card-body">
-                    <h5 class="card-title">Cuatro Jugadores</h5>
-                    <p class="card-text">Juega en equipos de dos. Equipo A (Jugadores 1 y 3) usa círculos, Equipo B (Jugadores 2 y 4) usa cruces.</p>
-                    <form asp-controller="Game" asp-action="StartGame" method="post">
-                        <input type="hidden" name="mode" value="4" />
-                        <button type="submit" class="btn btn-primary btn-lg">Jugar 4 Jugadores</button>
-                    </form>
-                </div>
+            <h3>Dos Jugadores</h3>
+            <p>Juega contra otro jugador. Primer jugador usa círculos (○), segundo usa cruces (×).</p>
+            <button type="submit" class="btn btn-game">Jugar 2 Jugadores</button>
+        </form>
+
+        <form asp-controller="Game" asp-action="StartGame" method="post" class="option-card-form">
+            <input type="hidden" name="mode" value="4" />
+            <div class="icon-circle four-players">
+                <i class="bi bi-people"></i>
             </div>
-        </div>
+            <h3>Cuatro Jugadores</h3>
+            <p>Juega en equipos de dos. Equipo A (Jugadores 1 y 3) usa círculos, Equipo B (2 y 4) usa cruces.</p>
+            <button type="submit" class="btn btn-game">Jugar 4 Jugadores</button>
+        </form>
+
     </div>
-    
+
     <div class="mt-4">
-        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Volver al Inicio</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-back">Volver al Inicio</a>
     </div>
 </div>
 
