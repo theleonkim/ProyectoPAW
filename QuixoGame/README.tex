@@ -1,0 +1,456 @@
+\documentclass[11pt,a4paper]{article}
+
+% -----------------------
+% PACKAGES
+% -----------------------
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish]{babel}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{longtable}
+\usepackage{tikz}     % Para diagramas de base de datos
+\usepackage{array}    % Mejoras en tablas
+\usepackage{titling}  % Para personalizar título
+\geometry{margin=2.5cm}
+
+\usetikzlibrary{positioning,shadows,calc}
+
+% -----------------------
+% DOCUMENT INFO
+% -----------------------
+\title{Desarrollo web del juego Quixxo en ASP.NET Core MVC\\[4pt]
+\large Programación Avanzada Web}
+
+\date{Diciembre 2025}
+
+\begin{document}
+
+\maketitle
+
+% -----------------------
+% INTEGRANTES
+% -----------------------
+\section*{Integrantes}
+\begin{itemize}
+    \item Kimberly Michelle León Ramírez -- Carné FI22026954 -- \texttt{kleon80701@ufide.ac.cr} -- Usuario Git: \texttt{theleonkim}
+    \item Keylor Daniel Chacón Salas -- Carné FH18005886 -- \texttt{kchacon80925@ufide.ac.cr} -- Usuario Git: \texttt{Keylor-CR}
+    \item Juan Pablo Solís Benamburg -- Carné FH21009671 -- \texttt{jsolis30293@ufide.ac.cr} -- Usuario Git: \texttt{juanpablosb04}
+    \item Marvin Alberto Camacho Salas -- Carné FH19006859 -- \texttt{mcamacho40200@ufide.ac.cr} -- Usuario Git: \texttt{marvcs}
+\end{itemize}
+
+% -----------------------
+% REPOSITORIO
+% -----------------------
+\section{Repositorio en Git}
+El código fuente completo del proyecto se encuentra en el siguiente repositorio:
+
+\begin{itemize}
+    \item \textbf{Repositorio GitHub:} \url{https://github.com/theleonkim/ProyectoPAW}
+\end{itemize}
+
+Solo uno de los integrantes sube el enlace al Campus Virtual, pero todos los miembros del grupo figuran en este documento y en el repositorio.
+
+% -----------------------
+% DESCRIPCIÓN GENERAL
+% -----------------------
+\section{Descripción General de la Aplicación}
+El proyecto consiste en el desarrollo web del juego \textbf{Quixxo} utilizando \textbf{ASP.NET Core MVC}.\\[4pt]
+La aplicación permite:
+
+\begin{itemize}
+    \item Crear nuevas partidas de Quixxo en distintos modos de juego (por ejemplo, 2 y 4 jugadores).
+    \item Registrar y persistir los movimientos realizados durante una partida.
+    \item Visualizar el estado del tablero en cada movimiento.
+    \item Detectar el ganador en función de las reglas del juego.
+    \item Consultar estadísticas de jugadores y equipos.
+\end{itemize}
+
+% -----------------------
+% FRAMEWORKS Y HERRAMIENTAS
+% -----------------------
+\section{Frameworks y Herramientas Utilizadas}
+\begin{itemize}
+    \item \textbf{Framework principal:} ASP.NET Core MVC.
+    \item \textbf{Lenguaje de programación:} C\#.
+    \item \textbf{ORM:} Entity Framework Core.
+    \item \textbf{Motor de base de datos:} SQLite.
+    \item \textbf{Front-end:} HTML5, CSS3, Bootstrap, JavaScript.
+    \item \textbf{Control de versiones:} Git y GitHub.
+    \item \textbf{Entorno de desarrollo:} Visual Studio / Visual Studio Code.
+    \item \textbf{Otros:} .NET SDK (versión utilizada en el proyecto), herramientas de línea de comandos de \texttt{dotnet} y \texttt{dotnet-ef}.
+\end{itemize}
+
+% -----------------------
+% TIPO DE APLICACIÓN
+% -----------------------
+\section{Tipo de Aplicación}
+La aplicación desarrollada es de tipo:
+
+\begin{itemize}
+    \item \textbf{MPA (Multi Page Application)} basada en el patrón \textbf{MVC} de ASP.NET Core.
+\end{itemize}
+
+Cada sección principal del sistema (creación de partidas, tablero de juego, historial, estadísticas, etc.) se maneja mediante controladores y vistas independientes. El servidor genera las vistas en el lado servidor y las entrega al cliente en cada petición HTTP, manteniendo una navegación clásica por páginas.
+
+% -----------------------
+% ARQUITECTURA UTILIZADA
+% -----------------------
+\section{Arquitectura Utilizada}
+
+La arquitectura utilizada en el proyecto es:
+
+\begin{itemize}
+    \item \textbf{Arquitectura MVC (Model-View-Controller)} con capas lógicas separadas.
+\end{itemize}
+
+De forma resumida:
+
+\begin{itemize}
+    \item \textbf{Capa de Modelos:} Contiene las clases de dominio (\texttt{Game}, \texttt{Move}, etc.) y las entidades que se mapean a la base de datos mediante Entity Framework Core.
+    \item \textbf{Capa de Servicios:} Implementa la lógica de negocio y la lógica interna del juego (\texttt{GameService}, \texttt{GameLogicService}, \texttt{ExportService}, etc.), desacopladas de los controladores.
+    \item \textbf{Capa de Controladores:} Recibe las peticiones HTTP, coordina la lógica de negocio a través de los servicios y retorna las vistas o respuestas JSON correspondientes.
+    \item \textbf{Capa de Vistas:} Implementada con Razor Views, donde se renderiza la interfaz de usuario y se muestran los datos del modelo.
+\end{itemize}
+
+Esta separación facilita el mantenimiento, las pruebas y la extensión futura del proyecto.
+
+% -----------------------
+% DIAGRAMA BD
+% -----------------------
+\section{Diagrama de Base de Datos}
+
+A continuación se muestra un diagrama simplificado de la base de datos del juego Quixxo.
+Para el proyecto se utiliza principalmente la relación entre partidas (\texttt{Games}) 
+y movimientos (\texttt{Moves}) en una base de datos relacional SQL.
+
+\begin{center}
+\begin{tikzpicture}[
+    table/.style={
+        rectangle,
+        draw=black,
+        rounded corners,
+        minimum width=6cm,
+        inner sep=4pt,
+        fill=gray!10,
+        drop shadow,
+        align=left,
+        font=\small
+    }
+]
+
+% Tabla Games
+\node (games) [table] at (0,0) {%
+    \textbf{Games}\\
+    id (PK, int)\\
+    start\_time (datetime)\\
+    end\_time (datetime, nullable)\\
+    mode (int)\\
+    status (int)\\
+    current\_player (int)\\
+    winner (int, nullable)\\
+    created\_at (datetime)
+};
+
+% Tabla Moves
+\node (moves) [table] at (7,0) {%
+    \textbf{Moves}\\
+    id (PK, int)\\
+    game\_id (FK, int)\\
+    player\_number (int)\\
+    from\_row (int)\\
+    from\_col (int)\\
+    to\_row (int)\\
+    to\_col (int)\\
+    symbol (int)\\
+    point\_direction (int, nullable)\\
+    created\_at (datetime)
+};
+
+% Relación 1 a muchos (sin texto en la flecha)
+\draw[-latex] (moves.west) -- (games.east);
+
+\end{tikzpicture}
+\end{center}
+
+Este modelo refleja la relación uno-a-muchos:
+una partida (\texttt{Game}) tiene muchos movimientos (\texttt{Move}).
+La clave foránea \texttt{Moves.game\_id} referencia a \texttt{Games.id} y
+los movimientos se eliminan en cascada cuando se elimina la partida.
+
+% -----------------------
+% REFERENCIAS WEB
+% -----------------------
+\section{Referencias y Recursos Web Utilizados}
+
+A continuación se listan algunas de las referencias consultadas para la implementación del proyecto, ejemplos de código y documentación técnica:
+
+\begin{itemize}
+    \item Documentación oficial de ASP.NET Core MVC: \url{https://learn.microsoft.com/aspnet/core}
+    \item Documentación oficial de Entity Framework Core: \url{https://learn.microsoft.com/ef/core}
+    \item Documentación de Bootstrap: \url{https://getbootstrap.com/docs/}
+    \item Foros y ejemplos de uso en \textit{Stack Overflow}: \url{https://stackoverflow.com/}
+    \item Ejemplos de uso de LINQ y patrones de repositorio en C\# publicados en blogs técnicos.
+\end{itemize}
+
+% -----------------------
+% PROMPTS IA
+% -----------------------
+\section{Prompts de IA Utilizados}
+
+En esta sección se documentan los prompts utilizados con agentes de IA (por ejemplo, ChatGPT) tanto de entrada como de salida. Se incluyen los enlaces a las respuestas generadas cuando aplica.
+
+\begin{longtable}{p{0.45\textwidth} >{\raggedright\arraybackslash}p{0.45\textwidth}}
+\textbf{Prompt (entrada)} & \textbf{Respuesta (salida)} \\
+\hline
+
+``Generame la acción HTTP POST que inicia una nueva partida usando un servicio GameService y redirige a la vista de juego.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e42bb4188191a3f4e19abbc2e6e3}} \\
+\hline
+
+``Escríbeme una acción POST en ASP.NET Core MVC llamada MakeMove que reciba un movimiento del jugador vía JSON, que ejecute la jugada usando un servicio y devuelva un JSON con éxito o error.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e5f7d4548191916dd4a066fbfc8a}} \\
+\hline
+
+``Generá una acción llamada "Reset" que reinicie la partida, ten en cuenta el ID y que luego redirija nuevamente a la pantalla del juego.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e63b4c608191818bd11b4a0a338b}} \\
+\hline
+
+``Creá una acción GET que reciba el ID de una de las partida, obtenga la información, prepare la lista de movimientos que hubo y retorne la vista correspondiente.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e6e35fc08191821986be958e308d}} \\
+\hline
+
+``Generame un endpoint GET que devuelva el estado del tablero en un movimiento dado.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e73fa0e48191994961b7d6858363}} \\
+\hline
+
+``Generá una acción que exporte una partida a XML y permita descargar el archivo con un nombre dinámico.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e77238048191b2829c22a172d0ba}} \\
+\hline
+
+``Creame un controlador que use GameService y el illoger. Debe tener una acción GET Index que obtenga las estadísticas de los jugadores y de los equipos desde GameService, que las coloque en ViewBag y retorne la vista.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e849dea48191b9da359b88cf9c3d}} \\
+\hline
+
+``Quiero que generes un DbContext completo para una aplicación ASP.NET Core que usa Entity Framework Core.
+El DbContext debe llamarse QuixoDbContext, debe recibir en el constructor DbContextOptions<QuixoDbContext> y debe incluir los DbSet necesarios para manejar partidas y movimientos del juego Quixo mencionado anteriormente.
+Las clases del modelo son Move y Game.
+
+Requisitos:
+
+Un Game tiene muchos Moves (relación 1 a muchos) con borrado en cascada.
+
+Las propiedades enum de Game (Mode y Status) deben almacenarse como int.
+
+Las propiedades enum de Move (Symbol y PointDirection, esta última nullable) deben almacenarse como int.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e8f33b9c8191b0ab2781fc6e98f9}} \\
+\hline
+
+``Necesito un servicio ExportService en ASP.NET Core que, dado un gameId, cargue la partida desde la base de datos (incluye los movimientos) y genere un XML de toda la información usando XElement / XDocument.
+Debe devolver el XML como string en un método ExportGameToXml.
+Entrega el código completo.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930e9a753ac8191b8943959e14251a4}} \\
+\hline
+
+``Necesito que generes un servicio llamado GameLogicService para un proyecto ASP.NET Core MVC del juego Quixo.
+Este servicio debe encargarse de toda la lógica interna del juego, sin acceso a base de datos, solo lógica pura.
+
+El servicio debe incluir:
+
+Inicialización del tablero
+
+Método que cree un tablero 5x5 de cubos neutrales.
+
+Serialización y deserialización
+
+Serializar el tablero (con símbolo y dirección del punto de cada cubo) a JSON.
+
+Deserializarlo nuevamente en un arreglo 2D de Cube.
+
+Reglas del juego
+
+Método IsPeripheral para validar si una posición está en la periferia.
+
+Método CanPickCube que determine si un jugador puede seleccionar un cubo según:
+
+Si está en la periferia.
+
+Si es primera ronda (solo neutros).
+
+Si es 2 jugadores o 4 jugadores.
+
+Reglas de propiedad del cubo según símbolo y orientación del punto.
+
+Movimiento de cubos
+
+Método GetValidPlacementPositions que dado un cubo seleccionado devuelva todas las posiciones válidas de inserción siguiendo las reglas reales de Quixo.
+
+Método MakeMove que:
+
+Copie el tablero.
+
+Extraiga un cubo de la periferia.
+
+Desplace los demás cubos según si el movimiento es horizontal o vertical.
+
+Inserte el cubo en la posición final con el símbolo del jugador.
+
+Detección de ganador
+
+Método CheckWinner que verifique líneas horizontales, verticales y diagonales para detectar si el juego terminó.
+
+Debe soportar modo de 2 jugadores y de 4 jugadores.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930eadaf5488191a6a49ef98957f7d7}} \\
+\hline
+
+``Quiero que generes un servicio llamado GameService para un proyecto ASP.NET Core MVC del juego Quixo, que dependa de un DbContext y de un servicio de lógica interna llamado GameLogicService.
+
+El servicio debe incluir:
+
+Crear nueva partida
+
+Un método CreateNewGame que:
+
+Inicialice el tablero usando GameLogicService.
+
+Serialice el tablero.
+
+Cree y guarde un registro Game en la base de datos.
+
+Configure modo, estado, jugador actual y banderas necesarias.
+
+Obtener partida por ID
+
+Un método GetGameById que retorne un Game con sus movimientos ordenados.
+
+Obtener GameViewModel
+
+Un método GetGameViewModel que:
+
+Deserialice el tablero.
+
+Calcule tiempo transcurrido.
+
+Determine ganador si aplica.
+
+Devuelva un GameViewModel completo.
+
+Hacer movimiento
+
+Un método MakeMove que:
+
+Valide periferia.
+
+Valide que el jugador pueda retirar el cubo con CanPickCube.
+
+Valide posiciones de destino con GetValidPlacementPositions.
+
+Determine símbolo según modo (2/4 jugadores).
+
+Ejecute MakeMove del GameLogicService.
+
+Serialice nuevo tablero.
+
+Registre el movimiento en base de datos.
+
+Cambie de turno o determine ganador.
+
+Devuelva un GameResponseDto.
+
+Chequear línea ganadora
+
+Un método privado CheckLine que revise líneas horizontales, verticales y diagonales.
+
+Juegos finalizados
+
+Un método GetFinishedGames.
+
+Estadísticas
+
+GetPlayerStatistics para modo 2 jugadores.
+
+GetTeamStatistics para 4 jugadores.
+
+Resetear partida
+
+Un método ResetGame que elimine movimientos y reconstruya estado inicial.
+
+Conversión a DTO
+
+Un método privado ConvertToDto.'' 
+&
+\shortstack[l]{\textbf{Respuesta generada:}\\[2pt]\scriptsize\url{https://chatgpt.com/s/t_6930ebdc7dcc8191a5ada27b821f43df}} \\
+\hline
+
+\end{longtable}
+
+% -----------------------
+% INSTRUCTIVO
+% -----------------------
+\section{Instructivo de Instalación, Compilación y Ejecución}
+
+A continuación se detalla un instructivo breve para poner en marcha la aplicación en un entorno local.
+
+\subsection{Requisitos Previos}
+
+\begin{itemize}
+    \item \textbf{.NET SDK} (versión utilizada en el proyecto, por ejemplo .NET 8.0).
+    \item \textbf{SQLite} (no requiere servidor, solo acceso al archivo de base de datos configurado en la cadena de conexión).
+    \item \textbf{Git} para clonar el repositorio.
+    \item (Opcional) \textbf{Visual Studio} o \textbf{Visual Studio Code} con extensiones para desarrollo en .NET.
+\end{itemize}
+
+\subsection{Instalación}
+
+\begin{verbatim}
+# 1. Clonar el repositorio
+git clone https://github.com/theleonkim/ProyectoPAW.git
+
+# 2. Ingresar a la carpeta del proyecto (ajustar si hay solución / proyectos internos)
+cd ProyectoPAW/QuixoGame
+
+# 3. Restaurar paquetes NuGet
+dotnet restore
+\end{verbatim}
+
+
+\subsection{Compilación / Creación}
+
+\begin{verbatim}
+# Compilar la solución
+dotnet build
+\end{verbatim}
+
+En Visual Studio, también se puede compilar utilizando la opción \textit{Build Solution} desde el menú.
+
+\newpage
+\subsection{Ejecución}
+
+\begin{verbatim}
+# Ejecutar la aplicación desde la línea de comandos
+dotnet run
+\end{verbatim}
+
+O bien, desde Visual Studio, seleccionar el proyecto web correspondiente (por ejemplo, \texttt{ProyectoPAW}) y presionar \textbf{F5} o el botón de \textit{Run}.\\[4pt]
+
+Por defecto, la aplicación quedará disponible en una URL similar a:
+
+\begin{verbatim}
+https://localhost:5001
+http://localhost:5000
+\end{verbatim}
+
+(La URL exacta puede variar según la configuración del \texttt{launchSettings.json}.)
+
+\end{document}
